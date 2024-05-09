@@ -18,7 +18,7 @@
 ## ⚙️ Requirements
 
 * Godot 4.2.x Mono Version.
-* Install [Newtonsoft.Json](https://www.newtonsoft.com/json) package.
+* Installed [Newtonsoft.Json](https://www.newtonsoft.com/json) package.
 
 You can install **Newtonsoft.Json** via this command:
 
