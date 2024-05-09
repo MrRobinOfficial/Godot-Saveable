@@ -35,7 +35,7 @@ Or, you can install via [Nuget](https://www.nuget.org) [package manager](https:/
 
 ## ⚒️ Installation
 
-You can install from the <a href="#">Godot asset library</a>.
+You can install from the <a href="https://godotengine.org/asset-library/asset/2955">Godot asset library</a>.
 Or you can install from the <a href="https://github.com/MrRobinOfficial/Godot-Saveable/releases/latest">release section</a>.
 
 Alternatively, you can install this plugin via terminal with [*git*](https://git-scm.com/). **Here is the command for installing it**.
