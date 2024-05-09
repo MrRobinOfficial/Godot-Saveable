@@ -15,8 +15,18 @@
 
 #
 
-## ⚙️ Supported Platforms
-This plug-in was last built against Godot 4.2.2 mono version.
+## ⚙️ Requirements
+
+* Godot 4.2.x Mono Version.
+* Install [Newtonsoft.Json](https://www.newtonsoft.com/json) package.
+
+You can install **Newtonsoft.Json** via this command:
+
+```console
+dotnet add package Newtonsoft.Json
+```
+
+Or, you can install via [Nuget](https://www.nuget.org) [package manager](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio).
 
 ## ⚒️ Installation
 
@@ -38,7 +48,54 @@ This plugin is parsing system for file type `JSON`. You can  <a href="https://en
 * `TreeSave` is a class that contains `NodeSave` for each node in the tree.
 * `NodeSave` is class that contains a dictionary of key-value pairs.
 
-Here's a simple way to use this plugin:
+Use the `ISaveable` interface for callbacks related to save system:
+
+```csharp
+public partial class App : Node, ISaveable
+{
+    StringName ISaveable.UniqueID => "app";
+
+    private float _globalVolume = 1.0f;
+    private float _musicVolume = 0.5f;
+    private float _effectsVolume = 0.8f;
+    private float _motionBlurEffect = 0.0f;
+    private float _postProcessingEffect = 1.0f;
+
+    void ISaveable.Load(NodeSave save)
+    {
+        _globalVolume = save.GetProperty<float>("globalVolume");
+        _musicVolume = save.GetProperty<float>("musicVolume");
+        _effectsVolume = save.GetProperty<float>("effectsVolume");
+        _motionBlurEffect = save.GetProperty<float>("motionBlurEffect");
+        _postProcessingEffect = save.GetProperty<float>("postProcessingEffect");
+    }
+
+    void ISaveable.Save(NodeSave save)
+    {
+        save.AddProperty("globalVolume", _globalVolume);
+        save.AddProperty("musicVolume", _musicVolume);
+        save.AddProperty("effectsVolume", _effectsVolume);
+        save.AddProperty("motionBlurEffect", _motionBlurEffect);
+        save.AddProperty("postProcessingEffect", _postProcessingEffect);
+    }
+}
+```
+
+Output:
+
+```json
+{
+  "app": {
+    "globalVolume": 1.0,
+    "musicVolume": 0.5,
+    "effectsVolume": 0.8,
+    "motionBlurEffect": 0.0,
+    "postProcessingEffect": 1.0
+  }
+}
+```
+
+Load a file:
 
 ```csharp
 private string FILE_PATH = "user://saves/profile_01/save.dat";
@@ -74,6 +131,8 @@ SaveSystem.LoadFile(
 );
 ```
 
+Save a file:
+
 ```csharp
 private string FILE_PATH = "user://saves/profile_01/save.dat";
 
@@ -108,8 +167,6 @@ SaveSystem.SaveFile(
 );
 ```
 
-#
-
 > [!NOTE]
 > If you wish to load a save file before saving it, you must specify to disable the auto load on `LoadFile()` method.
 
@@ -133,6 +190,55 @@ SaveSystem.SaveFile(
     GetTree().Root,
     save // Optional parameter to append changes to an existing save
 );
+```
+
+#
+
+Here's a practical example:
+
+```csharp
+public partial class SaveMenu : CanvasLayer
+{
+    [Export] public Button? LoadBtn { get; private set; }
+    [Export] public Button? SaveBtn { get; private set; }
+
+    public override void _EnterTree()
+    {
+        LoadBtn!.Pressed += OnPressed_Load;
+        SaveBtn!.Pressed += OnPressed_Save;
+    }
+
+    public override void _ExitTree()
+    {
+        LoadBtn!.Pressed -= OnPressed_Load;
+        SaveBtn!.Pressed -= OnPressed_Save;
+    }
+
+    private string FILE_PATH = "user://saves/profile_01/save.dat";
+
+    private void OnPressed_Load()
+    {
+        SaveSystem.LoadFile(
+            FILE_PATH,
+            GetTree().Root
+        );
+    }
+
+    private void OnPressed_Save()
+    {
+        TreeSave? save = SaveSystem.LoadFile(
+            FILE_PATH,
+            GetTree().Root,
+            loadTree: false
+        );
+
+        SaveSystem.SaveFile(
+            FILE_PATH,
+            GetTree().Root,
+            save
+        );
+    }
+}
 ```
 
 ## 🆘 Support
