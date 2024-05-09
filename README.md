@@ -13,7 +13,12 @@
 
 </div>
 
-#
+## 🔑 Features
+
+- Saving entire node trees.
+- Uses `Newtonsoft.Json` for serialization and deserialization.
+- Supports both encrypted, compressed and regular mode.
+- `ISaveable` interface to allow modular save/load structures.
 
 ## ⚙️ Requirements
 
@@ -40,13 +45,48 @@ cd addons
 git clone git@github.com:MrRobinOfficial/Godot-Saveable.git Saveable
 ```
 
+## 📦 Converters
+
+This plugin is using [Newtonsoft.Json](https://www.newtonsoft.com/json) for serialization and deserialization. By using `JsonConverter`, it allows you to convert your custom classes to and from JSON. This plugin includes custom converters for Godot specific types.
+
+Here's an list of available converters:
+
+- Core converters
+    - `NodeSaveConverter`
+    - `TreeSaveConverter`
+- Godot converters
+    - `AabbConverter` - [Aabb](https://docs.godotengine.org/en/stable/classes/class_aabb.html)
+    - `BasisConverter` - [Basis](https://docs.godotengine.org/en/stable/classes/class_basis.html)
+    - `CallableConverter` - [Callable](https://docs.godotengine.org/en/stable/classes/class_callable.html)
+    - `ColorConverter` - [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)
+    - `GodotObjectConverter` - [GodotObject](https://docs.godotengine.org/en/stable/classes/class_object.html)
+    - `NodePathConverter` - [NodePath](https://docs.godotengine.org/en/stable/classes/class_nodepath.html)
+    - `PlaneConverter` - [Plane](https://docs.godotengine.org/en/stable/classes/class_plane.html)
+    - `ProjectionConverter` - [Projection](https://docs.godotengine.org/en/stable/classes/class_projection.html)
+    - `QuaternionConverter` - [Quaternion](https://docs.godotengine.org/en/stable/classes/class_quaternion.html)
+    - `Rect2Converter` - [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html)
+    - `Rect2IConverter` - [Rect2I](https://docs.godotengine.org/en/stable/classes/class_rect2i.html)
+    - `RidConverter` - [Rid](https://docs.godotengine.org/en/stable/classes/class_rid.html)
+    - `SceneTreeConverter` - [SceneTree](https://docs.godotengine.org/en/stable/classes/class_scenetree.html)
+    - `SignalConverter` - [Signal](https://docs.godotengine.org/en/stable/classes/class_signal.html)
+    - `StringNameConverter` - [StringName](https://docs.godotengine.org/en/stable/classes/class_stringname.html)
+    - `Transform2DConverter` - [Transform2D](https://docs.godotengine.org/en/stable/classes/class_transform2d.html)
+    - `Transform3DConverter` - [Transform3D](https://docs.godotengine.org/en/stable/classes/class_transform3d.html)
+    - `Vector2Converter` - [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html)
+    - `Vector2IConverter` - [Vector2I](https://docs.godotengine.org/en/stable/classes/class_vector2i.html)
+    - `Vector3Converter` - [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html)
+    - `Vector3IConverter` - [Vector3I](https://docs.godotengine.org/en/stable/classes/class_vector3i.html)
+    - `Vector4Converter` - [Vector4](https://docs.godotengine.org/en/stable/classes/class_vector4.html)
+    - `Vector4IConverter` - [Vector4I](https://docs.godotengine.org/en/stable/classes/class_vector4i.html)
+
 ## 📝 Quick guide
 
-This plugin is parsing system for file type `JSON`. You can  <a href="https://en.wikipedia.org/wiki/JSON">read more</a> about `JSON` file format.
+This plugin uses `JSON` as a serialization format. You can <a href="https://en.wikipedia.org/wiki/JSON">read more</a> about `JSON` file format.
 
 * `SaveSystem` is a static class that contains functions to load/save a file.
 * `TreeSave` is a class that contains `NodeSave` for each node in the tree.
 * `NodeSave` is class that contains a dictionary of key-value pairs.
+* `ISaveable` is an interface that defines a function `Load(NodeSave save)` and `Save(NodeSave save)`.
 
 Use the `ISaveable` interface for callbacks related to save system:
 
@@ -311,3 +351,30 @@ If you have any questions or issue, just write either to my [YouTube channel](ht
 ## 🔗 References
 - [Installing plugins](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html)
 - [Introduction to JSON file format](https://en.wikipedia.org/wiki/JSON)
+- [Nuget](https://www.nuget.org)
+- [Nuget package manager](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio)
+- [Newtonsoft.Json](https://www.newtonsoft.com/json)
+- [git](https://git-scm.com/)
+- [Aabb](https://docs.godotengine.org/en/stable/classes/class_aabb.html)
+- [Basis](https://docs.godotengine.org/en/stable/classes/class_basis.html)
+- [Callable](https://docs.godotengine.org/en/stable/classes/class_callable.html)
+- [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)
+- [GodotObject](https://docs.godotengine.org/en/stable/classes/class_object.html)
+- [NodePath](https://docs.godotengine.org/en/stable/classes/class_nodepath.html)
+- [Plane](https://docs.godotengine.org/en/stable/classes/class_plane.html)
+- [Projection](https://docs.godotengine.org/en/stable/classes/class_projection.html)
+- [Quaternion](https://docs.godotengine.org/en/stable/classes/class_quaternion.html)
+- [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html)
+- [Rect2I](https://docs.godotengine.org/en/stable/classes/class_rect2i.html)
+- [Rid](https://docs.godotengine.org/en/stable/classes/class_rid.html)
+- [SceneTree](https://docs.godotengine.org/en/stable/classes/class_scenetree.html)
+- [Signal](https://docs.godotengine.org/en/stable/classes/class_signal.html)
+- [StringName](https://docs.godotengine.org/en/stable/classes/class_stringname.html)
+- [Transform2D](https://docs.godotengine.org/en/stable/classes/class_transform2d.html)
+- [Transform3D](https://docs.godotengine.org/en/stable/classes/class_transform3d.html)
+- [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html)
+- [Vector2I](https://docs.godotengine.org/en/stable/classes/class_vector2i.html)
+- [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html)
+- [Vector3I](https://docs.godotengine.org/en/stable/classes/class_vector3i.html)
+- [Vector4](https://docs.godotengine.org/en/stable/classes/class_vector4.html)
+- [Vector4I](https://docs.godotengine.org/en/stable/classes/class_vector4i.html)
