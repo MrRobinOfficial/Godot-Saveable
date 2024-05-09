@@ -95,6 +95,70 @@ Output:
 }
 ```
 
+If you want to add JSON property without messing with **Newtonsoft.Json** and **internal** systems, you can instead use `System.Dynamic.ExpandoObject` and `dynamic` keyword.
+
+Here's the modified version:
+
+```csharp
+public partial class App : Node, ISaveable
+{
+    StringName ISaveable.UniqueID => "app";
+
+    private float _globalVolume = 1.0f;
+    private float _musicVolume = 0.5f;
+    private float _effectsVolume = 0.8f;
+    private float _motionBlurEffect = 0.0f;
+    private float _postProcessingEffect = 1.0f;
+
+    void ISaveable.Load(NodeSave save)
+    {
+        dynamic? volumes = save.GetProperty<dynamic>("volumes");
+        _globalVolume = volumes?.global;
+        _musicVolume = volumes?.music;
+        _effectsVolume = volumes?.effects;
+
+        dynamic? graphics = save.GetProperty<dynamic>("graphics");
+        _motionBlurEffect = graphics?.motionBlur;
+        _postProcessingEffect = graphics?.postProcessing;
+    }
+
+    void ISaveable.Save(NodeSave save)
+    {
+        dynamic volumes = new System.Dynamic.ExpandoObject();
+        volumes.global = _globalVolume;
+        volumes.music = _musicVolume;
+        volumes.effects = _effectsVolume;
+
+        dynamic graphics = new System.Dynamic.ExpandoObject();
+        graphics.motionBlur = _motionBlurEffect;
+        graphics.postProcessing = _postProcessingEffect;
+
+        save.AddProperty("volumes", volumes);
+        save.AddProperty("graphics", graphics);
+    }
+}
+```
+
+Output:
+
+```json
+{
+  "app": {
+    "volumes": {
+      "global": 1.0,
+      "music": 0.5,
+      "effects": 0.8
+    },
+    "graphics": {
+      "motionBlur": 0.0,
+      "postProcessing": 1.0
+    },
+  }
+}
+```
+
+#
+
 Load a file:
 
 ```csharp
